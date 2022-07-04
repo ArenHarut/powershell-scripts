@@ -32,6 +32,8 @@ Install-PackageProvider -Name NuGet
 
 Install-Module Az
 Import-Module Az.Accounts
+Install-Module -Name SQLServer
+Import-Module -Name SQLServer
 Connect-AzAccount -Subscription $subid
 
 echo "Checking if Epool exists. If not create one"
@@ -50,10 +52,6 @@ echo "Copying Azure original DB"
 
 New-AzSqlDatabaseCopy -ResourceGroupName $rgname -ServerName $sourceserver -DatabaseName $dbname `
     -CopyResourceGroupName $rgname -ElasticPoolName $epoolname -CopyServerName $targetserver -CopyDatabaseName $copyname
-
-
-Install-Module -Name SQLServer
-Import-Module -Name SQLServer
 
 echo "Deleting Custom users in copied DB"
 
@@ -74,6 +72,9 @@ echo "Importing bacpac of the DB to AWS"
 
 
 .\sqlpackage.exe /a:Import /sf:$pathtofile /tsn:$awsrdsserver /tdn:$awsrdsdb /tu:$awsrdsusername /tp:$awsrdspass
+
+
+echo "Creating users in new DB"
 
 
 #You should input the SQL script within query quotes before executing the scripts. You will input script to create application and also other requested

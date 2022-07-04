@@ -1,4 +1,5 @@
-#Before the start make sure that servers and epools exist. For the sake of speed, create a separate Elastic pool with several vcores so bacpac generation won't stuck for hours
+#Before the start make sure that servers exist. Script creates elastic pool with large DTU size so it might come with a little cost.
+
 
 
 echo "Setting envrionment variables and creds"

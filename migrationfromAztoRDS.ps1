@@ -75,8 +75,10 @@ echo "Importing bacpac of the DB to AWS"
 
 .\sqlpackage.exe /a:Import /sf:$pathtofile /tsn:$awsrdsserver /tdn:$awsrdsdb /tu:$awsrdsusername /tp:$awsrdspass
 
+
 #You should input the SQL script within query quotes before executing the scripts. You will input script to create application and also other requested
 #users to newly transfered DB, so application will work normally in AWS.
 
 Invoke-Sqlcmd -ServerInstance $awsrdsserver -Database $copyname -Username $awsrdsusername -Password $awsrdspass `
 -query "CREATE LOGIN XXXXXX"
+

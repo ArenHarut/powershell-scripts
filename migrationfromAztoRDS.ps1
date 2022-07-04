@@ -1,4 +1,5 @@
 #Before the start make sure that servers exist. Script creates elastic pool with large DTU size so it might come with a little cost.
+#For this example eDTU is 800 and region I created was UK South. Hourly price was 3.04 USD
 
 
 
@@ -42,7 +43,7 @@ echo "Checking if Epool exists. If not create one"
 $epool = Get-AzSqlElasticPool -ResourceGroupName $rgname -ServerName $sourceserver -ElasticPoolName $epoolname -ErrorAction SilentlyContinue
 
 if($epool -eq $null){
-    $epoolcreate =  New-AzSqlElasticPool -ResourceGroupName $rgname -ServerName $sourceserver -ElasticPoolName $epoolname -Edition "Standard" -Dtu 800
+    $epoolcreate =  New-AzSqlElasticPool -ResourceGroupName $rgname -ServerName $sourceserver -ElasticPoolName $epoolname -Edition "Standard" -Dtu 800 -DatabaseDtuMax 400
 }
 else{
     Write-Host "$epoolname already exist"

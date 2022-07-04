@@ -57,8 +57,8 @@ Import-Module -Name SQLServer
 
 echo "Deleting Custom users in copied DB"
 
-#You should input the SQL script within query quotes before executing the scripts. Just replace usernames that you see in closed brackets with actual usernames
-#that you notice in Original DB
+#You should input the SQL script within query quotes before executing the scripts. In this step, you remove the custom users on Azure SQL DB
+#so you can safely export it and import it without problems to RDS
 
 Invoke-Sqlcmd -ServerInstance $sqlsvname -Database $copyname -Username $azuresvusername -Password $azuresvpassword `
 -query 'delete user [XXXXXXX]'
@@ -74,3 +74,11 @@ echo "Importing bacpac of the DB to AWS"
 
 
 .\sqlpackage.exe /a:Import /sf:$pathtofile /tsn:$awsrdsserver /tdn:$awsrdsdb /tu:$awsrdsusername /tp:$awsrdspass
+
+
+#You should input the SQL script within query quotes before executing the scripts. You will input script to create application and also other requested
+#users to newly transfered DB, so application will work normally in AWS.
+
+Invoke-Sqlcmd -ServerInstance $awsrdsserver -Database $copyname -Username $awsrdsusername -Password $awsrdspass `
+-query "CREATE LOGIN XXXXXX"
+

@@ -61,7 +61,7 @@ echo "Deleting Custom users in copied DB"
 #that you notice in Original DB
 
 Invoke-Sqlcmd -ServerInstance $sqlsvname -Database $copyname -Username $azuresvusername -Password $azuresvpassword `
--query Read-Host "Delete users script"
+-query 'delete user [XXXXXXX]'
 
 echo "Starting export of a DB. To do this you should have sqlpackage.exe installed. You can get it from here: https://docs.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-download?view=sql-server-ver16"
 

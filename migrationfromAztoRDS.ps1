@@ -1,6 +1,8 @@
 #Before the start make sure that servers exist. Script creates elastic pool with large DTU size so it might come with a little cost.
 #For this example eDTU is 800 and region I created was UK South. Hourly price was 3.04 USD
 
+echo "Marking start time"
+Get-Date -DisplayHint Time
 
 
 echo "Setting envrionment variables and creds"
@@ -17,7 +19,6 @@ $azuresvpassword = Read-Host "Enter Azure SQL Server password" -AsSecureString
 $azuresvpassword = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($azuresvpassword))
 $sqlsvname = Read-Host "Enter Azure SQL Server full dns name"
 $awsrdsserver = Read-Host "Enter AWS RDS server dns name"
-$awsrdsdb = Read-Host "Enter AWS RDS db name"
 $awsrdsusername = Read-Host "Enter AWS RDS username" -MaskInput
 $awsrdspass = Read-Host "Enter AWS RDS server password" -AsSecureString
 $awsrdspass = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($awsrdspass))
@@ -73,7 +74,7 @@ cd 'C:\Program Files\Microsoft SQL Server\150\DAC\bin\'
 echo "Importing bacpac of the DB to AWS"
 
 
-.\sqlpackage.exe /a:Import /sf:$pathtofile /tsn:$awsrdsserver /tdn:$awsrdsdb /tu:$awsrdsusername /tp:$awsrdspass
+.\sqlpackage.exe /a:Import /sf:$pathtofile /tsn:$awsrdsserver /tdn:$copyname /tu:$awsrdsusername /tp:$awsrdspass
 
 
 echo "Creating users in new DB"
@@ -85,3 +86,6 @@ echo "Creating users in new DB"
 Invoke-Sqlcmd -ServerInstance $awsrdsserver -Database $copyname -Username $awsrdsusername -Password $awsrdspass `
 -query "CREATE LOGIN XXXXXX"
 
+
+echo "Marking end time"
+Get-Date -DisplayHint Time
